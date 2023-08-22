@@ -33,9 +33,12 @@ public class App {
    JLabel searchPatternHeightValueLabel;
    static int searchPatternHeight;
    static int searchPatternWidth;
-   static boolean isDirectionFlipped = false;
+   static boolean isXDirectionFlipped = false;
+   static boolean isYDirectionFlipped = false;
    JButton setWidth;
    JButton setHeight;
+   JCheckBox checkRepeat;
+   static boolean isRepeating = false;
    RecordPositionByClickListener listener = new RecordPositionByClickListener();
 
    public void start() {
@@ -46,54 +49,74 @@ public class App {
          int current = 0;
          while (true) {
             if (enabled) {
-               while(yDistanceDragged < searchPatternHeight){
-                  while(xDistanceDragged < searchPatternWidth){
-                     if(isDirectionFlipped){
+               while (yDistanceDragged < searchPatternHeight) {
+                  while (xDistanceDragged < searchPatternWidth) {
+                     if (isXDirectionFlipped) {
                         r.mouseMove(endCord, 560);
                         r.mousePress(button);
                         current = 0;
-                        while(current != xDragDistanceVar){
-                           if(startCord > endCord){
+                        while (current != xDragDistanceVar) {
+                           if (startCord > endCord) {
                               r.mouseMove(endCord + current, 560);
-                           }else{
+                           } else {
                               r.mouseMove(endCord - current, 560);
                            }
                            current++;
-                           Thread.sleep(5);
+                           Thread.sleep(4);
                         }
                         r.mouseRelease(button);
                         xDistanceDragged = xDistanceDragged + xDragDistanceVar;
-                     }else{
+                     } else {
                         r.mouseMove(startCord, 560);
                         r.mousePress(button);
                         current = 0;
-                        while(current != xDragDistanceVar){
-                           if(startCord > endCord){
+                        while (current != xDragDistanceVar) {
+                           if (startCord > endCord) {
                               r.mouseMove(startCord - current, 560);
-                           }else{
+                           } else {
                               r.mouseMove(startCord + current, 560);
                            }
                            current++;
-                           Thread.sleep(5);
+                           Thread.sleep(4);
                         }
                         r.mouseRelease(button);
                         xDistanceDragged = xDistanceDragged + xDragDistanceVar;
                      }
                      Thread.sleep(500);
                   }
-                  r.mouseMove(startCord, 760);
-                  r.mousePress(button);
-                  current = 0;
-                  while(current < 200){
-                     r.mouseMove(startCord, (760-current));
-                     current++;
-                     Thread.sleep(5);
+                  if (isYDirectionFlipped) {
+                     r.mouseMove(startCord, 560);
+                     r.mousePress(button);
+                     current = 0;
+                     while (current < 200) {
+                        r.mouseMove(startCord, 560 + current);
+                        current++;
+                        Thread.sleep(4);
+                     }
+                  } else {
+                     r.mouseMove(startCord, 760);
+                     r.mousePress(button);
+                     current = 0;
+                     while (current < 200) {
+                        r.mouseMove(startCord, (760 - current));
+                        current++;
+                        Thread.sleep(4);
+                     }
                   }
                   r.mouseRelease(button);
                   yDistanceDragged = yDistanceDragged + 200;
                   xDistanceDragged = 0;
-                  isDirectionFlipped = !isDirectionFlipped;
+                  isXDirectionFlipped = !isXDirectionFlipped;
                   Thread.sleep(400);
+               }
+               if (isRepeating) {
+                  // find where x
+                  yDistanceDragged = 0;
+                  isYDirectionFlipped = !isYDirectionFlipped;
+               } else {
+                  enabled = false;
+                  xDistanceDragged = 0;
+                  yDistanceDragged = 0;
                }
             }
             Thread.sleep(1500);
@@ -144,6 +167,9 @@ public class App {
       yDragDistance = new JLabel("Y-Drag Distance: 200");
       yDragDistance.setVisible(false);
 
+      checkRepeat = new JCheckBox("Repeat Infinitely");
+      checkRepeat.addItemListener(new CheckRepeatListener());
+
       JButton startMacroButton = new JButton("Start Mouse Macro");
       startMacroButton.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
       startMacroButton.addActionListener(new StartMacroListener());
@@ -159,7 +185,6 @@ public class App {
       setHeight = new JButton("Set Height");
       setHeight.addActionListener(new SetSearchHeightValue());
       setHeight.setEnabled(false);
-
 
       startFindCoord.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
       endFindCoord.setBorder(BorderFactory.createEmptyBorder(10, 0, 10, 0));
@@ -188,7 +213,8 @@ public class App {
       innerPanelBottomText2.add(searchPatternHeightLabel);
       innerPanelBottomText2.add(searchPatternHeightField);
       innerPanelBottomText2.add(setHeight);
-      
+
+      innerPanelBottom.add(checkRepeat);
       innerPanelBottom.add(innerPanelBottomText1);
       innerPanelBottom.add(innerPanelBottomText2);
       innerPanelBottom.add(searchPatternWidthValueLabel);
@@ -202,7 +228,7 @@ public class App {
 
       frame.getContentPane().add(BorderLayout.CENTER, panel);
       frame.getContentPane().add(BorderLayout.SOUTH, startMacroButton);
-      frame.setSize(400, 400);
+      frame.setSize(400, 450);
       frame.setVisible(true);
    }
 
@@ -237,10 +263,22 @@ public class App {
       }
    }
 
+   class CheckRepeatListener implements ItemListener {
+      @Override
+      public void itemStateChanged(ItemEvent ev) {
+         if (checkRepeat.isSelected()) {
+            isRepeating = true;
+         } else {
+            isRepeating = false;
+         }
+      }
+   }
+
    class StartMacroListener implements ActionListener {
       @Override
       public void actionPerformed(ActionEvent e) {
-         if (startCord < 0 || endCord < 0 || searchPatternWidth < xDragDistanceVar || searchPatternHeight < yDragDistanceVar) {
+         if (startCord < 0 || endCord < 0 || searchPatternWidth < xDragDistanceVar
+               || searchPatternHeight < yDragDistanceVar) {
             System.out.println("failed to start macro");
             return;
          }
@@ -267,7 +305,7 @@ public class App {
          if (NativeKeyEvent.getKeyText(e.getKeyCode()) == "Q") {
             System.out.println("Quitting application");
             System.exit(1);
-         }else{
+         } else {
             enabled = false;
             xDistanceDragged = searchPatternWidth;
             yDistanceDragged = searchPatternHeight;
@@ -316,18 +354,19 @@ public class App {
          }
       }
    }
-   class SetSearchWidthValue implements ActionListener{
+
+   class SetSearchWidthValue implements ActionListener {
       @Override
-      public void actionPerformed(ActionEvent e){
+      public void actionPerformed(ActionEvent e) {
          String value = searchPatternWidthField.getText();
          searchPatternWidthValueLabel.setText("Search Width: " + value);
          searchPatternWidth = Integer.parseInt(value);
       }
    }
 
-   class SetSearchHeightValue implements ActionListener{
+   class SetSearchHeightValue implements ActionListener {
       @Override
-      public void actionPerformed(ActionEvent e){
+      public void actionPerformed(ActionEvent e) {
          String value = searchPatternHeightField.getText();
          searchPatternHeightValueLabel.setText("Search Height: " + value);
          searchPatternHeight = Integer.parseInt(value);
@@ -376,20 +415,20 @@ public class App {
       }
 
       public void remove(FilterBypass fb, int offset, int length)
-         throws BadLocationException {
-            Document doc = fb.getDocument();
-            StringBuilder sb = new StringBuilder();
-            sb.append(doc.getText(0, doc.getLength()));
-            sb.delete(offset, offset + length);
-            if(sb.toString().length() == 0) {
-               super.replace(fb, offset, length, "", null);
+            throws BadLocationException {
+         Document doc = fb.getDocument();
+         StringBuilder sb = new StringBuilder();
+         sb.append(doc.getText(0, doc.getLength()));
+         sb.delete(offset, offset + length);
+         if (sb.toString().length() == 0) {
+            super.replace(fb, offset, length, "", null);
+         } else {
+            if (test(sb.toString())) {
+               super.remove(fb, offset, length);
             } else {
-               if (test(sb.toString())) {
-                  super.remove(fb, offset, length);
-               } else {
-                  // warn the user and don't allow the insert 		    }      }
-               }
+               // warn the user and don't allow the insert } }
             }
          }
+      }
    }
 }
