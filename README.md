@@ -1,8 +1,13 @@
 # ETKR Macro
+<a href="https://github.com/boonaki/etkr-macro/releases/tag/Releases" className="mx-3 my-1"><img src='https://img.shields.io/github/downloads/boonaki/etkr-macro/total.svg'></img></a><br>
 A mouse macro for the game Evony: The Kings Return.
-<a href="https://github.com/boonaki/etkr-macro/releases/tag/Releases" className="mx-3 my-1"><img src='https://img.shields.io/github/downloads/boonaki/etkr-macro/total.svg'></img></a>
 
 ![img](https://boonaki.me/imgs/etkr-macro.png)
+
+## Recent Changes:
+- Fixed critical bug where macro didn't stop after restarting the macro
+- Changed search pattern height + width to swipe counts for simplicity
+- The Y-level that the macro moves in is now also defined by the user, rather than being hard-coded.
 
 ## How It's Made:
 
