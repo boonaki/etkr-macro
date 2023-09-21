@@ -1,6 +1,6 @@
 # ETKR Macro
+<a href="https://github.com/boonaki/etkr-macro/releases/tag/Releases" className="mx-3 my-1"><img src='https://img.shields.io/github/downloads/boonaki/etkr-macro/total.svg'></img></a><br>
 A mouse macro for the game Evony: The Kings Return.
-<a href="https://github.com/boonaki/etkr-macro/releases/tag/Releases" className="mx-3 my-1"><img src='https://img.shields.io/github/downloads/boonaki/etkr-macro/total.svg'></img></a>
 
 ![img](https://boonaki.me/imgs/etkr-macro.png)
 
