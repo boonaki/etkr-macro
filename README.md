@@ -4,6 +4,11 @@ A mouse macro for the game Evony: The Kings Return.
 
 ![img](https://boonaki.me/imgs/etkr-macro.png)
 
+## Recent Changes:
+- Fixed critical bug where macro didn't stop after restarting the macro
+- Changed search pattern height + width to swipe counts for simplicity
+- The Y-level that the macro moves in is now also defined by the user, rather than being hard-coded.
+
 ## How It's Made:
 
 **Tech used:** Java
