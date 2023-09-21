@@ -119,11 +119,11 @@ public class Macro {
 								Thread.sleep(4);
 							}
 						} else {
-							r.mouseMove(startXCord, 760);
+							r.mouseMove(startXCord, yCord + 200);
 							r.mousePress(button);
 							current = 0;
 							while (current < 200) {
-								r.mouseMove(startXCord, (760 - current));
+								r.mouseMove(startXCord, ((yCord + 200) - current));
 								current++;
 								Thread.sleep(4);
 							}
