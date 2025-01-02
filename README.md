@@ -7,7 +7,7 @@ A mouse macro for the game Evony: The Kings Return.
 ## Recent Changes:
 - Fixed critical bug where macro didn't stop after restarting the macro
 - Changed search pattern height + width to swipe counts for simplicity
-- The Y-level that the macro moves in is now also defined by the user, rather than being hard-coded.
+- The Y-level that the macro moves in is now defined by the user, rather than being hard-coded.
 
 ## How It's Made:
 
@@ -21,7 +21,7 @@ This application was built for my father. The game, Evony: The King's Return is 
 - Next you need to specify the coordinates for where you want the macro to *stop* dragging by clicking the `Find End Position` button and clicking anywhere **outside** of the application.
 - You can check the `Repeat Infinitely` checkbox to have the macro repeat until manually stopping.
 - In the `Horizontal Swipe Count` textbox, specify the number of times you want the macro to swipe horizontally before performing another swipe vertically.
-- In the `Vertical Swipe Count` textbox, specify the number of times you want the macro to swipe vertically. This value is used to determine how when the macro will end.
+- In the `Vertical Swipe Count` textbox, specify the number of times you want the macro to swipe vertically. This value is used to determine when the macro will end.
 > This is dependent on whether or not the `Repeat Infinitely` checkbox is ticked.
 - After you have all the points specified, click the `Start Mouse Macro` button
 
